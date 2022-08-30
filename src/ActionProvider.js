@@ -6,9 +6,9 @@ class ActionProvider {
     constructor(createChatBotMessage, setStateFunc) {
       this.createChatBotMessage = createChatBotMessage;
       this.setState = setStateFunc;
-      
+
     }
-  
+
 
     //default
     handleDefault = () => {
@@ -32,7 +32,7 @@ class ActionProvider {
                 withAvator:true,
             }
         );
-        data[0] = option 
+        data[0] = option
         this.updateChatbotState(message1);
     };
 
@@ -66,21 +66,26 @@ class ActionProvider {
     //function to render message and widgets when talkLINKS sherbot option is clicked
     handleTalkList=(option)=>{
         data[3] = option
-        fetch("http://127.0.0.1:5000/credit",{method:"post",body:JSON.stringify({data})})
-        .then(res=> res.json).then(res=>{
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ data })
+        };
+        fetch('http://127.0.0.1:5000/credit', requestOptions)
+        .then(res=> res.json()).then(res=>{
             const message1 = this.createChatBotMessage(
-                res,
+                res['response'],
             );
-    
+
             this.updateChatbotState(message1);
         }).catch(()=> {
             const message1 = this.createChatBotMessage(
                 "En este momento no se puede procesar su solicitud",
             );
-    
+
             this.updateChatbotState(message1);
         })
-        
+
     };
 
     //question1
@@ -97,7 +102,7 @@ class ActionProvider {
         const message1 = this.createChatBotMessage(
             "WBF (World Botlife Fund) announced that there are very few metalhead sherbots left, including me.I know ,I know I have such an awesome taste.🔥🔥",
             {
-                
+
                 withAvator:true,
             }
         );
@@ -110,20 +115,20 @@ class ActionProvider {
         const message1 = this.createChatBotMessage(
             "The taste of shawarma and coke eaten together.......🙌🙌🙌",
             {
-                
+
                 withAvator:true,
             }
         );
 
         this.updateChatbotState(message1);
-    };  
-    
+    };
+
     //question4
     handleTalkList4=()=>{
         const message1 = this.createChatBotMessage(
             "*yawns* in dreamland 🥱🥱",
             {
-                
+
                 withAvator:true,
             }
         );
@@ -177,20 +182,20 @@ class ActionProvider {
             }
         );
         this.updateChatbotState(greetingMessage);
-        
+
     }
-    
+
 
     updateChatbotState(message){
-       // NOTE: This function is set in the constructor, and is passed in 
-       //from the top level Chatbot component. The setState function here     
-       // actually manipulates the top level state of the Chatbot, so it's 
+       // NOTE: This function is set in the constructor, and is passed in
+       //from the top level Chatbot component. The setState function here
+       // actually manipulates the top level state of the Chatbot, so it's
        //important that we make sure that we preserve the previous state.
-       
+
        this.setState(prevState => ({
     	...prevState, messages: [...prevState.messages, message]
     }))
   }
 }
-  
+
   export default ActionProvider;
